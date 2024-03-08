@@ -1,7 +1,10 @@
 import app from './SRC/app.js'
+
+
 const PORT = 3000
 
-// escutar a porta
+//escutar a porta  3000
 app.listen(PORT, () =>{
-    console.log(`Servidor rodando no endereço http://localhost:${PORT}`)
+    console.log(`endereço: http://localhost:${PORT}`)
 })
+
