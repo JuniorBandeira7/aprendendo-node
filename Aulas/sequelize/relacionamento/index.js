@@ -65,9 +65,10 @@ app.post('/users/delete/:id', async (req, res)=>{
 app.get('/users/edit/:id',  async (req, res)=>{
     const id = req.params.id
 
-    const user = await User.findOne({raw: true, where: {id: id}})
-
-    res.render('useredit', {user})
+    //com o include vai enviar os itens do User incluindo o Address
+    const user = await User.findOne({include: Address, where: {id: id}})
+    //tem que ter esse "plain" para funcinar o relacionamento
+    res.render('useredit', {user: user.get({plain: true})})
 })
 
 app.post('/users/update', async (req, res)=>{
@@ -94,6 +95,33 @@ app.post('/users/update', async (req, res)=>{
     res.redirect('/')
 })
 
+app.post('/address/create', async (req, res)=>{
+    const userId = req.body.userId
+    const street = req.body.street
+    const number = req.body.number
+    let city = req.body.city
+
+    const address ={
+        userId,
+        number,
+        street,
+        city
+    }
+
+    await Address.create(address)
+
+    res.redirect(`/users/edit/${userId}`)
+})
+
+app.post('/address/delete', async (req, res)=>{
+    const id = req.body.id
+
+    await Address.destroy({where:{id: id}})
+
+    const userId = req.body.userId
+    res.redirect(`/users/edit/${userId}`)
+})
+
 app.get('/', async (req, res)=>{
     // utilizando o raw como parametro eu chamo apenas os dados da tabela
     const users = await User.findAll({raw: true})
@@ -106,6 +134,6 @@ app.get('/', async (req, res)=>{
 
 
 
-conn.sync({force: true}).then(()=>{
+conn.sync().then(()=>{
     app.listen(3000)
 }).catch(err => console.log(err))

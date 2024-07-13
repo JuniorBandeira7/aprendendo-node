@@ -5,7 +5,7 @@ db = require('../db/conn')
 const User = require('./User')
 
 
-//aqui estou definindo os campos da tabela usuario
+
 const Address = db.define('address', {
     street:{
         type: DataTypes.STRING,
@@ -13,14 +13,15 @@ const Address = db.define('address', {
     },
     number:{
         type: DataTypes.STRING
-        //esse campo não pode ser vazio, nem nulo
+        
     },
     city:{
         type: DataTypes.STRING,
         required: true
     }
 })
-
+User.hasMany(Address)
+//linka essa tabela com a tabela user e cria uma chave estrangeiras que é a id da tabela user
 Address.belongsTo(User)
 
 module.exports = Address
