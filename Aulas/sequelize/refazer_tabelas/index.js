@@ -106,8 +106,8 @@ app.get('/', async (req, res)=>{
 
 
 conn.
-//sync()
-sync({force: true}).//serve para forçar a criação das tabelas, as excluindo e criando de novo.
+sync().
+//sync({force: true}).//serve para forçar a criação das tabelas, as excluindo e criando de novo.
 then(()=>{
     app.listen(3000)
 }).
