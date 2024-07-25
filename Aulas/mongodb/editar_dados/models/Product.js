@@ -37,6 +37,14 @@ class Product{
 
         return
     }
+    
+    //Se usasse static teria que passar cada um dos parametros para a função
+    //como estou usando com o objeto, nao precisa
+    updateProduct(id){
+        conn.db().collection('products').updateOne({_id: new ObjectId(id)}, {$set: this})
+
+        return
+    }
 }
 
 module.exports = Product

@@ -37,6 +37,7 @@ class Product{
 
         return
     }
+
 }
 
 module.exports = Product
