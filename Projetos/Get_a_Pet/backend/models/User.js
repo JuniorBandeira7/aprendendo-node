@@ -12,6 +12,10 @@ const User = mongoose.model(
             type: String,
             required: true
         },
+        password:{
+            type: String,
+            required: true
+        },
         image:{
             type: String
         },
@@ -23,3 +27,5 @@ const User = mongoose.model(
     {timestamps: true}
     )
 )
+
+module.exports = User
