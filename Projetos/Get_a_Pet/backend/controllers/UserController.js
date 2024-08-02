@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 // helpers
 
 const createUserToken = require('../helpers/create-user-token')
+const getUserByToken = require('../helpers/get-user-by-token')
 const getToken = require('../helpers/get-token')
 
 module.exports = class UserController{
@@ -133,7 +134,45 @@ module.exports = class UserController{
     }
 
     static async editUser(req, res){
-        res.status(200).json({message: 'Atualizado!'})
-        return
+        const id = req.params.id
+
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        const {name, email, phone, password, confirmpassword} = req.body
+
+        let image = ''
+
+        if(!name){
+            res.status(422).json({message: 'O nome é obrigatório'})
+            return
+        }
+        if(!email){
+            res.status(422).json({message: 'O email é obrigatório'})
+            return
+        }
+
+        const userExists = await User.findOne({email: email})
+
+        if(user.email !== email && userExists){
+            res.status(422).json({message: 'Email já cadastrado, utilize outro'})
+            return
+        }
+
+        user.email = email
+
+        if(!phone){
+            res.status(422).json({message: 'O telefone é obrigatório'})
+            return
+        }
+        if(!password){
+            res.status(422).json({message: 'a senha é obrigatória'})
+            return
+        }
+        if(!confirmpassword){
+            res.status(422).json({message: 'a confirmação de senha é obrigatória'})
+            return
+        }
+      
     }
 }
