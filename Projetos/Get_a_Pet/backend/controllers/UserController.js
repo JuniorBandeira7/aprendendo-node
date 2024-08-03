@@ -143,14 +143,23 @@ module.exports = class UserController{
 
         let image = ''
 
+        if(req.file){
+            user.image = req.file.filename
+        }
+
         if(!name){
             res.status(422).json({message: 'O nome é obrigatório'})
             return
         }
+
+        user.name = name
+
         if(!email){
             res.status(422).json({message: 'O email é obrigatório'})
             return
         }
+
+        user.email = email
 
         const userExists = await User.findOne({email: email})
 
@@ -165,14 +174,32 @@ module.exports = class UserController{
             res.status(422).json({message: 'O telefone é obrigatório'})
             return
         }
-        if(!password){
-            res.status(422).json({message: 'a senha é obrigatória'})
+
+        user.phone = phone
+
+        if(password != confirmpassword){
+            res.status(422).json({message: 'A senha e a confirmação de senha devem ser iguais'})
+            return
+        }else if(password === confirmpassword && password != null){
+
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            user.password = passwordHash
+        }
+        try {
+            await User.findByIdAndUpdate({_id: user._id},
+                {$set: user},
+                {new: true}
+            )
+
+            res.status(200).json({
+                message: 'Dados atualizados'
+            })
+        } catch (error) {
+            res.status(500).json({message: error})
             return
         }
-        if(!confirmpassword){
-            res.status(422).json({message: 'a confirmação de senha é obrigatória'})
-            return
-        }
-      
+
     }
 }
