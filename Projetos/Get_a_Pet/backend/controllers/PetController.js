@@ -133,6 +133,6 @@ module.exports = class PetController{
 
         await  Pet.findByIdAndDelete(id)
 
-        res.status(200).json({message: 'Pet removido!'})
+        res.status(200).json({message: 'Pet removido com sucesso!'})
     }
 }
