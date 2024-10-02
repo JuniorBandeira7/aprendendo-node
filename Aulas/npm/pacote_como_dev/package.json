@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "chalk": "^5.3.0"
+  },
+  "dependencies": {
+    "pacote_como_dev": "file:"
   }
 }

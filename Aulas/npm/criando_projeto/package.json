@@ -10,5 +10,8 @@
     "npm"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "criando_projeto": "file:"
+  }
 }
